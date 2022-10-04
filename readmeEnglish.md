@@ -1,6 +1,8 @@
-# Tiny ESP32 Vectrex
-This is a port of the Ackerman Tiny Vectrex (which used TTGO VGA32 and a VGA monitor) (link: See https://github.com/rpsubc8/ESP32TinyVectrex)
-changed to use a standard ESP32 and an old style CRT Oscillscope for a real vector screen.
+# Tiny ESP32 Vectrex - Oscilloscope Version
+This is a port of the Ackerman Tiny Vectrex (which used TTGO VGA32 and a VGA monitor)
+(link: See https://github.com/rpsubc8/ESP32TinyVectrex)
+
+This version uses a standard ESP32 and an old style CRT Oscilloscope for a real vector screen.
 
 It is a work in progress - currently no audio and due to limitations of ESP - speed is not 100% of the original Vectrex.
 But it is great to see real vector graphics in action.
