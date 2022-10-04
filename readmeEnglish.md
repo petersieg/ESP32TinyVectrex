@@ -1,46 +1,28 @@
 # Tiny ESP32 Vectrex
-x86 port of John Hawthorn's Vectrex emulator to the ESP32.<br>
+This is a port of the Ackerman Tiny Vectrex (which used TTGO VGA32 and a VGA monitor) (link: See https://github.com/rpsubc8/ESP32TinyVectrex)
+changed to use a standard ESP32 and an old style CRT Oscillscope for a real vector screen.
+
+It is a work in progress - currently no audio and due to limitations of ESP - speed is not 100% of the original Vectrex.
+But it is great to see real vector graphics in action.
+
 <center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/previewVectrexLogo.gif'></center>
-I have made several modifications:
+Modifications from TTGO VGA32 version:
 <ul>
- <li>Ported to ESP32</li>
- <li>No PSRAM used, running on ESP32 520 KB RAM (TTGO VGA32 v1.x)</li> 
- <li>Use of a low-resource OSD</li>
- <li>Created project compatible with Arduino IDE and Platform IO</li>
- <li>Black and white mode 1 bpp (2 colors) VGA2Controller</li>
- <li>640x480, 800x600 and 1024x768 support</li>
- <li>For video, fabgl 1.0.8 is used.</li>
- <li>Half speed emulation, 23 fps at 640x480 and 19 fps at 1024x768</li>
- <li>No sound at the moment</li>
- <li>Support for reading cartridges via WIFI</li>
- <li>Precompiled version (flash download 3.9.2) 1024x768</li>  
+ <li>Outputs vector lines via ESP32 Dac outputs</li>
+ <li>Removed all VGA libraries to improve performance</li>
+ <li>Removed all PS2 keyboard support - now uses esp32 pins for input </li> 
+ <li>Unfortunitely this ment losing - Ackermans menus and precompiled versions</li>
 </ul>
-
-
-<br><br>
-<h1>Precompiled version</h1>
-In the precompile folder there is a version already compiled to be saved with the flash download tool 3.9.2. It is a version for the 1024x768 video mode and the FLASH demo games.<br><br>
-<a href='https://github.com/rpsubc8/ESP32TinyVectrex/tree/main/ESP32/precompile'>https://github.com/rpsubc8/ESP32TinyVectrex/tree/main/ESP32/precompile</a>
-<br><br>
-We must choose the ESP32 type:
-<center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/flash00.gif'></center>
-Subsequently, select the files as shown in the attached screenshot, with the same offset values:
-<center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/flash01.gif'></center>
-And we will press start. If everything has been correct, we will only have to restart the ESP32.
-
 
 <br><br>
 <h1>Requirements</h1>
 Required:
  <ul>
-  <li>TTGO VGA32 v1.x (1.0, 1.1, 1.2, 1.4)</li>
-  <li>Visual Studio 1.66.1 PLATFORMIO 2.4.3 Espressif32 v3.5.0 (python 3.6)</li>
-  <li>Arduino IDE 1.8.11 Espressif System 1.0.6</li>
-  <li>Arduino fabgl 1.0.8 reduced library (included in PLATFORMIO project)</li>
+  <li>Any ESP32 board which gives access to Pin 24 and 25</li>
+  <li>Visual Studio 1.66.1 PLATFORMIO 2.4.3 Espressif32 v3.5.0 (or compatible)</li>
+  <li>or Arduino IDE 1.8.11 (or better) with Espressif System 1.0.6</li>
  </ul>
- <center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/ttgovga32v12.jpg'></center>
 <br><br>
-
 
 <h1>PlatformIO</h1>
 PLATFORMIO 2.4.3 must be installed from the Visual Studio extensions. Espressif32 v3.5.0 (python 3.6) is also required.
@@ -70,7 +52,7 @@ Loading is allowed:
   <li>32K cartridges</li>  
   <li>Restart</li>
  </ul>
-A basic low-resource OSD is available, i.e. very simple, which is displayed by pressing the <b>F1</b> key.
+<del>A basic low-resource OSD is available, i.e. very simple, which is displayed by pressing the <b>F1</b> key.
  <center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/previewOSD.gif'></center>
  The files must be converted to .h in hexadecimal. The online tool can be used:<br>
  <a href='http://tomeko.net/online_tools/file_to_hex.php?lang=en'>http://tomeko.net/online_tools/file_to_hex.php?lang=en</a><br>
@@ -79,21 +61,8 @@ A basic low-resource OSD is available, i.e. very simple, which is displayed by p
  <li>Cursors left, right, up, down</li>
  <li>Keys a, s, d, f</li>
  </ul>
+ </del>
  
- 
-<br><br>
-<h1>Options</h1>
-The <b>gbConfig.h</b> file selects the options:
-<ul>
- <li><b>use_lib_vga640x480:</b> 640x480 video mode.</li>
- <li><b>use_lib_vga800x600:</b> 800x600 video mode.</li>
- <li><b>use_lib_vga1024x768:</b> 1024x768 video mode.</li>
- <li><b>use_lib_gfx:</b> Disables video output. Displays nothing on the screen. Use only to measure emulation times.</li>
- <li><b>use_lib_wifi:</b> Enable WIFI to be able to load cartridges from a web server. As it requires a lot of RAM, it is advisable to use an http server, instead of https. The network name and password must be entered in the gbWifiConfig.h file.</li>
-</ul>
-
-
-
 <br><br>
 <h1>WIFI support</h1>
 A basic WIFI support has been added for TEST, to be able to load the cartridges (bin) from a basic HTML server, without the need of CORS, so the deployment is very fast. Apache Server, NGINX, etc... can be used.<br>
