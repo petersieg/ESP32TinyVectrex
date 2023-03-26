@@ -22,7 +22,7 @@ Modifications from TTGO VGA32 version:
 <h1>Requirements</h1>
 Required:
  <ul>
-  <li>Any ESP32 board which gives access to Pin 24 and 25</li>
+  <li>Any ESP32 board which gives access to Pin 26 and 25</li>
   <li>Visual Studio 1.66.1 PLATFORMIO 2.4.3 Espressif32 v3.5.0 (or compatible)</li>
   <li>or Arduino IDE 1.8.11 (or better) with Espressif System 1.0.6</li>
  </ul>
