@@ -6,6 +6,8 @@ This version uses a standard ESP32 and an old style CRT Oscilloscope for a real 
 
 See video: https://youtu.be/J523SKyvs14
 
+This github repo is just a cleanup/remove unnused code from: See https://github.com/OzmoOzmo/ESP32TinyVectrex
+
 It is a work in progress - currently no audio and due to limitations of ESP - speed is not 100% of the original Vectrex.
 But it is great to see real vector graphics in action.
 
@@ -52,7 +54,7 @@ The whole project is compatible with the Arduino 1.8.11 framework.
 We only have to open the <b>TinyVectrex.ino</b> in the <b>TinyVectrex</b> directory.
 <center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/previewArduinoIDEpreferences.gif'></center>
 We must install the spressif extensions in the additional card urls manager <b>https://dl.espressif.com/dl/package_esp32_index.json</b>
-For video, <b>fabgl 1.0.8</b> must be installed.
+For video, <b>fabgl 1.0.8 or 1.0.9</b> must be installed.
 <center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/previewFabglVersion.gif'></center>
 We must deactivate the PSRAM option, and in case of exceeding 1 MB of binary, select 4 MB of partition when uploading. Although the code does not use PSRAM, if the option is active and our ESP32 does not have it, an exception will be generated and it will restart in loop mode.
 
