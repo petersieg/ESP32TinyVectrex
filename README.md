@@ -25,7 +25,7 @@ Modifications from TTGO VGA32 version:
 Required:
  <ul>
   <li>Any ESP32 board which gives access to both DAC Pin 26 + 25 and other defined Pins in FastDac.h for keypad</li>
-  <li>or Arduino IDE 1.8.11 (or better) with Espressif System 1.0.6</li>
+  <li>or Arduino IDE 1.8.11 (or better) with ESP32 addon for Arduino IDE from Espressif System Version 1.0.6</li>
  </ul>
 
 
