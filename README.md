@@ -11,7 +11,7 @@ This github repo is just a cleanup/remove unnused code from: See https://github.
 It is a work in progress - currently no audio and due to limitations of ESP - speed is not 100% of the original Vectrex.
 But it is great to see real vector graphics in action.
 
-<center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/previewVectrexLogo.gif'></center>
+<center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewVectrexLogo.gif'></center>
 Modifications from TTGO VGA32 version:
 <ul>
  <li>Outputs vector lines via ESP32 Dac outputs</li>
@@ -52,16 +52,16 @@ Required:
 <h1>Arduino IDE</h1>
 The whole project is compatible with the Arduino 1.8.11 framework.
 We only have to open the <b>TinyVectrex.ino</b> in the <b>TinyVectrex</b> directory.
-<center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/previewArduinoIDEpreferences.gif'></center>
+<center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewArduinoIDEpreferences.gif'></center>
 We must install the espressif extensions in the additional card urls manager <b>https://dl.espressif.com/dl/package_esp32_index.json</b>
 <br>For video, <b>fabgl 1.0.8 or 1.0.9</b> must be installed.
-<center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/previewFabglVersion.gif'></center>
+<center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewFabglVersion.gif'></center>
 We must deactivate the PSRAM option, and in case of exceeding 1 MB of binary, select 4 MB of partition when uploading. Although the code does not use PSRAM, if the option is active and our ESP32 does not have it, an exception will be generated and it will restart in loop mode.
 
  
 <h1>Test Applications</h1>
 The MineStorm game is included:
-<center><img src='https://raw.githubusercontent.com/rpsubc8/ESP32TinyVectrex/main/preview/previewMineStorm.gif'></center>
+<center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewMineStorm.gif'></center>
 <ul>
  <li>rainy (demoscene)</li>
  <li>OnslaughtElect (demoscene)</li>
