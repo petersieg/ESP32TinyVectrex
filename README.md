@@ -62,11 +62,17 @@ We must deactivate the PSRAM option, and in case of exceeding 1 MB of binary, se
 <h1>Test Applications</h1>
 The MineStorm game is included:
 <center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewMineStorm.gif'></center>
-<ul>
- <li>rainy (demoscene)</li>
- <li>OnslaughtElect (demoscene)</li>
- <li>demo 2019 party (demoscene)</li>
- <li>deadline 2019 (demoscene)</li>
- <li>raiding party (demoscene)</li>
- <li>trex</li> 
-</ul>
+
+ROM/Cartridge choice is at compile time in file osint.cpp:
+<pre>
+// char *gb_cartfilename=NULL;
+unsigned char gb_load_new_rom = 1;
+unsigned char gb_id_cur_rom = 3; // rom actual; Default 0 = Minestorm - max_list_rom 6; see file: dataFlash/gbrom.h
+//  0 = "rom/gbCartEmpty.h"
+//  1 = "rom/gbCartRainy.h"
+//  2 = "rom/gbCartOnslaughtElect.h"
+//  3 = "rom/gbCartDemo2019party.h"
+//  4 = "rom/gbCartDeadline2019.h"
+//  5 = "rom/gbCartRaidingparty.h"
+//  6 = "rom/gbCartTrex.h"
+</pre>
