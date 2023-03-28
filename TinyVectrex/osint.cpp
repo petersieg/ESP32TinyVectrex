@@ -34,7 +34,15 @@
 
 // char *gb_cartfilename=NULL;
 unsigned char gb_load_new_rom = 1;
-unsigned char gb_id_cur_rom = 0; // rom actual
+unsigned char gb_id_cur_rom = 0; // rom actual; Default 0 = Minestorm - max_list_rom 6; see file: dataFlash/gbrom.h
+//  0 = "rom/gbCartEmpty.h"
+//  1 = "rom/gbCartRainy.h"
+//  2 = "rom/gbCartOnslaughtElect.h"
+//  3 = "rom/gbCartDemo2019party.h"
+//  4 = "rom/gbCartDeadline2019.h"
+//  5 = "rom/gbCartRaidingparty.h"
+//  6 = "rom/gbCartTrex.h"
+
 unsigned char gb_salir = 0;
 // unsigned char gb_reset=0;
 
