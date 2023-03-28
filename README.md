@@ -19,6 +19,7 @@ Modifications from TTGO VGA32 version:
  <li>Removed all PS2 keyboard support - now uses esp32 pins for input - see FastDac.h</li>
  <li>Removed all OSD stuff - P.Sieg March 2023</li>
  <li>Removed all WIFI stuff - P.Sieg March 2023</li>
+ <li>Removed all DEMOS after seeing, that thay don't run fine - P.Sieg March 2023</li>
  <li>Unfortunitely no vga means loosing Ackermans menus</li>
 </ul>
 
@@ -43,7 +44,6 @@ Required:
 <ul>
 <li>Simply swap X and Y leads around if the image appears rotated</li>
 <li>I have some of the key inputs assigned to input pins - see code FastDac.h and osint.cpp for details.</li>
-<li>there are several ROMs included in the code - again see code to select which rom loads at start.</li>
 <li>Must be a ESP32 - ESP8266 doesnt have DACs.</li>
 <li>its not 100% full speed - todo: moving some code to the second unused core of the ESP32 might help.</li>
 </ul>
@@ -62,17 +62,3 @@ We must deactivate the PSRAM option, and in case of exceeding 1 MB of binary, se
 <h1>Test Applications</h1>
 The MineStorm game is included:
 <center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewMineStorm.gif'></center>
-
-ROM/Cartridge choice is at compile time in file osint.cpp:
-<pre>
-// char *gb_cartfilename=NULL;
-unsigned char gb_load_new_rom = 1;
-unsigned char gb_id_cur_rom = 3; // rom actual; Default 0 = Minestorm - max_list_rom 6; see file: dataFlash/gbrom.h
-//  0 = "rom/gbCartEmpty.h"
-//  1 = "rom/gbCartRainy.h"
-//  2 = "rom/gbCartOnslaughtElect.h"
-//  3 = "rom/gbCartDemo2019party.h"
-//  4 = "rom/gbCartDeadline2019.h"
-//  5 = "rom/gbCartRaidingparty.h"
-//  6 = "rom/gbCartTrex.h"
-</pre>
