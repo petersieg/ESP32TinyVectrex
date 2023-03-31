@@ -11,6 +11,39 @@ This github repo is just a cleanup/remove unnused code from: See https://github.
 It is a work in progress - currently no audio and due to limitations of ESP - speed is not 100% of the original Vectrex.
 But it is great to see real vector graphics in action.
 
+<hr>
+
+Here are pictures of MyEsp32Vectrex:
+
+Overview:
+
+<img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/MyEsp32Vectrex-1.jpeg'>
+
+Esp32 and joystick buttons case (old network switch):
+
+<img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/MyEsp32Vectrex-2.jpeg'>
+
+<pre>
+Code var - GPIO - Remark
+b1 - 15 - (not wired/used)
+b2 - 13 - Hyperspace
+b3 - 12 - Thrust
+b4 - 14 - Fire
+CuL - 16 - Move left - Rx2 Pin
+CuR - 17 - Move right - Tx2 Pin
+CuU - 18 - Move Up - (not wired/used)
+CuD - 19 - Move Down - (not wired/used)
+</pre>
+
+See Esp32 30-pin GPIO Pinout:
+<img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/ESP32-GPIO-Pins.png'>
+
+HM412 display:
+
+<img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/MyEsp32Vectrex-3.jpeg'>
+
+<hr>
+
 <center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewVectrexLogo.gif'></center>
 Modifications from TTGO VGA32 version:
 <ul>
