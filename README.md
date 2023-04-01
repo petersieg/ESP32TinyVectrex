@@ -13,7 +13,7 @@ But it is great to see real vector graphics in action.
 
 <hr>
 
-Original code owners - see above and license. My pictures and changes are CC-BY-SA-NC.
+Original code owners - see chapter above and see LICENSE file. My pictures and changes are CC-BY-NC-SA.
 
 Here are pictures of MyEsp32Vectrex:
 
