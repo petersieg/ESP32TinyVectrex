@@ -19,11 +19,11 @@ Here are pictures of MyEsp32Vectrex:
 
 Overview:
 
-<img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/MyEsp32Vectrex-1.jpeg'>
+<img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/MyEsp32Vectrex-1.jpeg'>
 
 Esp32 and joystick buttons case (old network switch):
 
-<img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/MyEsp32Vectrex-2.jpeg'>
+<img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/MyEsp32Vectrex-2.jpeg'>
 
 <pre>
 Code var - GPIO - Remark
@@ -38,15 +38,15 @@ CuD - 19 - Move Down - (not wired/used)
 </pre>
 
 See Esp32 30-pin GPIO Pinout:
-<img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/ESP32-GPIO-Pins.png'>
+<img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/ESP32-GPIO-Pins.png'>
 
 HM412 display:
 
-<img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/MyEsp32Vectrex-3.jpeg'>
+<img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/MyEsp32Vectrex-3.jpeg'>
 
 <hr>
 
-<center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewVectrexLogo.gif'></center>
+<center><img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/previewVectrexLogo.gif'></center>
 Modifications from TTGO VGA32 version:
 <ul>
  <li>Outputs vector lines via ESP32 Dac outputs</li>
@@ -87,13 +87,13 @@ Required:
 <h1>Arduino IDE</h1>
 The whole project is compatible with the Arduino 1.8.11 framework.
 We only have to open the <b>TinyVectrex.ino</b> in the <b>TinyVectrex</b> directory.
-<center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewArduinoIDEpreferences.gif'></center>
+<center><img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/previewArduinoIDEpreferences.gif'></center>
 We must install the espressif extensions in the additional card urls manager <b>https://dl.espressif.com/dl/package_esp32_index.json</b>
 <br>For video, <b>fabgl 1.0.8 or 1.0.9</b> must be installed.
-<center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewFabglVersion.gif'></center>
+<center><img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/previewFabglVersion.gif'></center>
 We must deactivate the PSRAM option, and in case of exceeding 1 MB of binary, select 4 MB of partition when uploading. Although the code does not use PSRAM, if the option is active and our ESP32 does not have it, an exception will be generated and it will restart in loop mode.
 
  
 <h1>Test Applications</h1>
 The MineStorm game is included:
-<center><img src='https://github.com/petersieg/ESP32TinyVectrex/blob/main/previewMineStorm.gif'></center>
+<center><img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/previewMineStorm.gif'></center>
