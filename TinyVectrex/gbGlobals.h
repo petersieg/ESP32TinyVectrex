@@ -2,13 +2,8 @@
  #define _GB_GLOBAL_H
   
  #include "gbConfig.h"
+ #include "fabgl.h"
 
- #include "fabgl.h" // still required for e6809.cpp: IRAM_ATTR test_z8 (unsigned char r)
-/*
- #ifdef use_lib_remove_fabgl_queue
-  extern uint8_t * gb_buffer_vga[768];
- #endif 
-*/
  extern unsigned int gb_time_vga_before;
  extern unsigned int gb_time_now;
 
@@ -22,8 +17,7 @@
  extern unsigned long gb_fps_time_ini_unified;
  extern unsigned long gb_fps_unified;
  extern unsigned long gb_fps_ini_unified;
-
-/*
+ 
  #ifdef use_lib_gfx  
   //class VGA2DirectControllerPublic : public fabgl::VGAController
   class VGA2DirectControllerPublic : public fabgl::VGA2Controller
@@ -37,13 +31,11 @@
 
   extern VGA2DirectControllerPublic VGAController;
  #endif
-*/   
- //extern char *gb_cartfilename;
+   
  extern unsigned char gb_load_new_rom;
  extern unsigned char gb_id_cur_rom; //rom actual 
- //extern unsigned char gb_reset;
  
-  extern unsigned char gb_show_osd_main_menu;
+ extern unsigned char gb_show_osd_main_menu;
  extern unsigned char gb_salir;
  
  

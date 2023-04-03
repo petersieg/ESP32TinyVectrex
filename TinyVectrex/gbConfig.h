@@ -2,9 +2,7 @@
  #define _GB_CONFIG_H
  
  //Medir rendimiento sin usar fabgl video
- //#define use_lib_gfx
-
- //#define use_lib_vga1024x768
+ #define use_lib_gfx
 
  #define use_lib_vectortiny
  
@@ -13,7 +11,7 @@
  #define use_lib_cartdridge_flash_ram
  
  //Salida log puerto serie usb
- //#define use_lib_log_serial 
+ #define use_lib_log_serial 
 
  #define gb_ms_vga 50
 

@@ -7,10 +7,8 @@
 #include "osint.h"
 #include "vecx.h"
 
-#ifndef use_lib_wifi
 #ifdef use_lib_cartdridge_flash_ram
 #include "dataFlash/gbrom.h"
-#endif
 #endif
 
 // ac{}
@@ -25,18 +23,11 @@
 
 #include <Arduino.h>
 
-#ifdef use_lib_wifi
-#include "gbWifi.h"
-#include "gbWifiConfig.h"
-#endif
-
 #define EMU_TIMER 20 // the emulators heart beats at 20 milliseconds
 
-// char *gb_cartfilename=NULL;
 unsigned char gb_load_new_rom = 1;
 unsigned char gb_id_cur_rom = 0; // rom actual; Default 0 = Minestorm = only available option 
 unsigned char gb_salir = 0;
-// unsigned char gb_reset=0;
 
 #ifdef use_lib_vectortiny
 static int screenx;
@@ -48,7 +39,6 @@ static int offy;
 static long screenx;
 static long screeny;
 static long scl_factor;
-//static float scl_factor_float;
 static long offx;
 static long offy;
 #endif
@@ -69,38 +59,23 @@ void swap_short(short int *i, short int *j)
 }
 
 #ifdef use_lib_remove_fabgl_queue
-#ifdef use_lib_wifi
-static void Clear_bresenham()
-#else
 static void IRAM_ATTR Clear_bresenham()
-#endif
 {
     // uint8_t * ptrVideo;
     int tope = VGAController.getViewPortHeight();
     unsigned char topeByte = (VGAController.getViewPortWidth() >> 3); // DIV 8
     for (unsigned int i = 0; i < tope; i++) {
-        // uint8_t* gb_buffer_vga= VGAController.getScanline(i);
-        // memset(gb_buffer_vga[i],0,128); //1024 DIV 8
         memset(gb_buffer_vga[i], 0, topeByte); // 1024 DIV 8
-        // ptrVideo = (uint8_t *)VGAController.sgetScanline(i);
-        // memset(ptrVideo,0,128); //1024 DIV 8
     }
 }
 
-#ifdef use_lib_wifi
-static void draw_pixel_bresenham(short int x, short int y)
-#else
 static void IRAM_ATTR draw_pixel_bresenham(short int x, short int y)
-#endif
 {
-  //unsigned short int aRow;
     uint8_t *ptrVideo;
     unsigned char aColByte, aColShift;
     unsigned char aBit;
     unsigned int auxOffs;
 
-  //if (x>=0 && x<screenx && y>=0 && y<screeny)  
-  //if (x>=0 && x<1024 && y>=0 && y<700)
     {
         // aRow= y;
         aColByte = x >> 3;          // x div 8
@@ -119,11 +94,7 @@ static void IRAM_ATTR draw_pixel_bresenham(short int x, short int y)
     }
 }
 
-#ifdef use_lib_wifi
-static void draw_line_bresenham(short int x1, short int y1, short int x2, short int y2)
-#else
 static void IRAM_ATTR draw_line_bresenham(short int x1, short int y1, short int x2, short int y2)
-#endif
 {
     int topeY = VGAController.getViewPortHeight();
     int topeX = VGAController.getViewPortWidth();
@@ -309,36 +280,23 @@ void VGA_osint_render() {
     fabgl::Primitive p;
     Point auxPoint;
 
-    // cv.setPenColor(Color::Black); //Borro pantalla SDL_FillRect
-    // BEGIN setPenColor
     p.cmd = fabgl::PrimitiveCmd::SetPenColor;
     p.color = Color::Black;
     VGAController.addPrimitive(p);
-    // END setPenColor
-
-    // cv.setBrushColor(Color::Black); //Para el clear
-    // BEGIN SetBrushColor
     p.cmd = fabgl::PrimitiveCmd::SetBrushColor;
     p.color = Color::Black;
     VGAController.addPrimitive(p);
-    // END SetBrushColor
-
-    // cv.clear();
-    // Clear BEGIN
     p.cmd = fabgl::PrimitiveCmd::Clear;
     p.ivalue = 0;
     VGAController.addPrimitive(p);
 #endif
 
 #ifdef use_lib_vectortiny
-// cv.setPenColor(Color::White);
-// BEGIN setPenColor
 #ifdef use_lib_remove_fabgl_queue
 #else
     p.cmd = fabgl::PrimitiveCmd::SetPenColor;
     p.color = Color::White;
     VGAController.addPrimitive(p);
-    // END setPenColor
 #endif
 
     for (v = 0; v < vector_draw_cnt; v++) {
@@ -352,16 +310,12 @@ void VGA_osint_render() {
             y0 = offy + y0 / scl_factor;
 
 #ifdef use_lib_remove_fabgl_queue
-            // draw_line_bresenham(x0,y0,x0,x0);
             draw_pixel_bresenham(x0, y0);
 #else
             p.cmd = fabgl::PrimitiveCmd::SetPixelAt;
-            // auxPoint.X= x0;
-            // auxPoint.Y= y0;
             auxPoint = {x0, y0};
             p.pixelDesc = {auxPoint, Color::White};
             VGAController.addPrimitive(p);
-            // END setPixel
 #endif
 
         } else { // Linea
@@ -372,18 +326,12 @@ void VGA_osint_render() {
 #ifdef use_lib_remove_fabgl_queue
             draw_line_bresenham(x0, y0, x1, y1);
 #else
-            // BEGIN moveTo
             p.cmd = fabgl::PrimitiveCmd::MoveTo;
             p.position = Point(x0, y0);
             VGAController.addPrimitive(p);
-            // End moveTo
-
-            // Begin lineTo
-            // Primitive p;
             p.cmd = fabgl::PrimitiveCmd::LineTo;
             p.position = Point(x1, y1);
             VGAController.addPrimitive(p);
-            // End lineTo
 #endif
         }
     }
@@ -402,11 +350,7 @@ void VGA_osint_render() {
     if (time_prev > gb_stats_video_max_unified) {
         gb_stats_video_max_unified = time_prev;
     }
-    // Serial.printf("vga %d\n",(vga_end-vga_begin));
-    // fflush(stdout);
 #else
-    // printf("vcnt:%d\n",vector_draw_cnt);
-    // fflush(stdout);
     for (v = 0; v < vector_draw_cnt; v++) {
         Uint8 c = vectors_draw[v].color * 256 / VECTREX_COLORS;
         x0 = vectors_draw[v].x0;
@@ -424,73 +368,7 @@ void VGA_osint_render() {
 }
 
 static char *romfilename = "rom.dat";
-// static char *romfilename = "OnslaughtElectronBeamPlayboys.bin";
-// static char *romfilename = "rainy.bin";
 static char *cartfilename = NULL;
-// static char *cartfilename = "rainy.bin";
-
-#ifdef use_lib_wifi
-// void load_cart_WIFI(char * cadUrl)
-void load_cart_WIFI() {
-    int auxFileSize = 0;
-
-    // if (strcmp(cadUrl,"")==0)
-    if (strcmp(gb_cadUrl, "") == 0) {
-#ifdef use_lib_wifi_debug
-        Serial.printf("cart name empty\n");
-#endif
-        return;
-    }
-
-#ifdef use_lib_wifi_debug
-    Serial.printf("load_cart_WIFI\n");
-#endif
-#ifdef use_lib_wifi_debug
-    Serial.printf("Check WIFI\n");
-#endif
-    if (Check_WIFI() == false) {
-        return;
-    }
-    int leidos = 0;
-#ifdef use_lib_wifi_debug
-    // Serial.printf("URL:%s\n",cadUrl);
-    Serial.printf("URL:%s\n", gb_cadUrl);
-#endif
-    // Asignar_URL_stream_WIFI(cadUrl);
-    Asignar_URL_stream_WIFI(gb_cadUrl);
-    auxFileSize = gb_size_file_wifi;
-#ifdef use_lib_wifi_debug
-    Serial.printf("Size cart:%d\n", gb_size_file_wifi);
-#endif
-    Leer_url_stream_WIFI(&leidos);
-#ifdef use_lib_wifi_debug
-    Serial.printf("Leidos:%d\n", leidos); // Leemos 1024 bytes
-#endif
-
-    // He leido 1024 bytes. Lee resto
-    int contBuffer = 0;
-    int cont1024 = 0;
-    while (contBuffer < auxFileSize) {
-        if (contBuffer >= sizeof(cart)) {
-#ifdef use_lib_wifi_debug
-            Serial.printf("Limit exced cart 32768\n");
-#endif
-            break;
-        }
-        cart[contBuffer] = gb_buffer_wifi[cont1024];
-        contBuffer++;
-
-        cont1024++;
-        if (cont1024 >= 1024) {
-            Leer_url_stream_WIFI(&leidos);
-#ifdef use_lib_wifi_debug
-            Serial.printf("Leidos:%d\n", leidos);
-#endif
-            cont1024 = 0;
-        }
-    }
-}
-#endif
 
 static void initLoadROM() {
 #ifdef use_lib_rom_no_use_ram
@@ -510,15 +388,9 @@ static void initLoadROM() {
 
 #ifdef use_lib_cartdridge_flash_ram
 #ifdef use_lib_log_serial
-#ifdef use_lib_wifi
-    Serial.printf("Load cartdridge FLASH WIFI id:%d name:%s\n", gb_id_cur_rom, gb_cadUrl);
-#else
     Serial.printf("Load cartdridge FLASH id:%d size:%d\n", gb_id_cur_rom, gb_list_cart_size[gb_id_cur_rom]);
 #endif
-#endif
 
-#ifdef use_lib_wifi
-#else
     int topeCartBytes;
     if (gb_list_cart_size[gb_id_cur_rom] < 32768) {
         topeCartBytes = gb_list_cart_size[gb_id_cur_rom];
@@ -528,18 +400,11 @@ static void initLoadROM() {
         Serial.printf("Excede tamanio Cartucho 32768 bytes\n");
 #endif
     }
-#endif
 
 #ifdef use_lib_cartdridge_no_use_ram
     cart = gb_list_rom_data[gb_id_cur_rom];
 #else
-#ifdef use_lib_wifi
-    ShowStatusWIFI(1);
-    load_cart_WIFI(); // uso gb_cadUrl
-    ShowStatusWIFI(0);
-#else
     memcpy(cart, gb_list_rom_data[gb_id_cur_rom], topeCartBytes);
-#endif
 #endif
 
 #else
@@ -640,8 +505,6 @@ void osint_emuloop() {
 
         readevents();
 
-        // Serial.printf("%d %d %d\n",cpu_end,cpu_begin,(cpu_end-cpu_begin));
-        // Serial.printf("%d\n",(cpu_end-cpu_begin));
         gb_currentTime = millis();
         if ((gb_currentTime - gb_fps_time_ini_unified) > 1000) {
             gb_fps_time_ini_unified = gb_currentTime;
@@ -649,9 +512,6 @@ void osint_emuloop() {
             gb_fps_ini_unified = gb_fps_unified;
 #ifdef use_lib_log_serial
             Serial.printf("fps:%d\n", aux_fps);
-            //Serial.printf("fps:%d %d m:%d mx:%d v %d m:%d mx:%d\n", aux_fps, gb_stats_time_cur_unified,
-            //              gb_stats_time_min_unified, gb_stats_time_max_unified, gb_stats_video_cur_unified,
-            //              gb_stats_video_min_unified, gb_stats_video_max_unified);
 #endif
             gb_stats_time_min_unified = 500000;
             gb_stats_time_max_unified = 0;
@@ -686,7 +546,6 @@ void ImprimeMemoria() {
 }
 
 //********************************
-// int main(int argc, char *argv[])
 int mainEmulator() {
     ImprimeMemoria();
 
@@ -699,7 +558,6 @@ int mainEmulator() {
 
     while (gb_salir == 0) {
         if (gb_load_new_rom == 1) {
-            // cartfilename= gb_cartfilename;
             gb_load_new_rom = 0;
             initLoadROM(); // Cambio de init que lo usa fabgl
             osint_emuloop();
