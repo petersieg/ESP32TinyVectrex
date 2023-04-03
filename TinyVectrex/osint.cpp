@@ -29,20 +29,11 @@ unsigned char gb_load_new_rom = 1;
 unsigned char gb_id_cur_rom = 0; // rom actual; Default 0 = Minestorm = only available option 
 unsigned char gb_salir = 0;
 
-#ifdef use_lib_vectortiny
 static int screenx;
 static int screeny;
 static int scl_factor;
 static int offx;
 static int offy;
-#else
-static long screenx;
-static long screeny;
-static long scl_factor;
-static long offx;
-static long offy;
-#endif
-
 
 void swap(int *i, int *j)
 {
@@ -57,97 +48,6 @@ void swap_short(short int *i, short int *j)
     *i = *j;
     *j = t;
 }
-
-#ifdef use_lib_remove_fabgl_queue
-static void IRAM_ATTR Clear_bresenham()
-{
-    // uint8_t * ptrVideo;
-    int tope = VGAController.getViewPortHeight();
-    unsigned char topeByte = (VGAController.getViewPortWidth() >> 3); // DIV 8
-    for (unsigned int i = 0; i < tope; i++) {
-        memset(gb_buffer_vga[i], 0, topeByte); // 1024 DIV 8
-    }
-}
-
-static void IRAM_ATTR draw_pixel_bresenham(short int x, short int y)
-{
-    uint8_t *ptrVideo;
-    unsigned char aColByte, aColShift;
-    unsigned char aBit;
-    unsigned int auxOffs;
-
-    {
-        // aRow= y;
-        aColByte = x >> 3;          // x div 8
-        aColShift = 7 - (x & 0x07); // x mod 8
-
-        // gb_buffer_vga[y][x]= pixel;
-
-        aBit = 1 << aColShift;
-        // gb_buffer_vga[y][aColByte]= gb_buffer_vga[y][aColByte] | aBit;
-
-        // uint8_t* gb_buffer_vga= VGAController.getScanline(y);
-        auxOffs = aColByte;
-        gb_buffer_vga[y][auxOffs] = gb_buffer_vga[y][auxOffs] | aBit;
-        // ptrVideo = (uint8_t *)VGAController.sgetScanline(y);
-        // ptrVideo[auxOffs]= ptrVideo[auxOffs] | aBit;
-    }
-}
-
-static void IRAM_ATTR draw_line_bresenham(short int x1, short int y1, short int x2, short int y2)
-{
-    int topeY = VGAController.getViewPortHeight();
-    int topeX = VGAController.getViewPortWidth();
-
-    int steep = abs(y2 - y1) > abs(x2 - x1);
-    int inc = -1;
-
-    if (steep) {
-        swap_short(&x1, &y1);
-        swap_short(&x2, &y2);
-    }
-
-    if (x1 > x2) {
-        swap_short(&x1, &x2);
-        swap_short(&y1, &y2);
-    }
-
-    if (y1 < y2) {
-        inc = 1;
-    }
-
-    int dx = abs(x2 - x1);
-    int dy = abs(y2 - y1);
-    int y = y1;
-    int x = x1;
-    int e = 0;
-
-    for (x; x <= x2; x++) {
-        if (steep) {
-            // draw_pixel( y, x, 255);
-            if (y >= 0 && y < topeX && x >= 0 && x < topeY) {
-                draw_pixel_bresenham(y, x);
-            } else {
-                return;
-            }
-        } else {
-            // draw_pixel( x, y, 255);
-            if (x >= 0 && x < topeX && y >= 0 && y < topeY) {
-                draw_pixel_bresenham(x, y);
-            } else {
-                return;
-            }
-        }
-
-        if ((e + dy) << 1 < dx) {
-            e = e + dy;
-        } else {
-            y += inc;
-            e = e + dy - dx;
-        }
-    }
-}
-#endif
 
 inline void drawdot(int x, int y) {
     DAC1Write(map(x, 0, _ALG_MAX_X, 0, 255));
@@ -249,7 +149,7 @@ void osint_render() {
     }
 }
 
-void VGA_osint_render() {
+  void VGA_osint_render() {
     // Portar SDL_FillRect(screen, NULL, 0);
     int v;
     // unsigned int x0,x1,y0,y1;
@@ -272,10 +172,6 @@ void VGA_osint_render() {
     }
 
 #ifdef use_lib_gfx
-
-#ifdef use_lib_remove_fabgl_queue
-    Clear_bresenham();
-#else
     Canvas cv(&VGAController);
     fabgl::Primitive p;
     Point auxPoint;
@@ -289,15 +185,10 @@ void VGA_osint_render() {
     p.cmd = fabgl::PrimitiveCmd::Clear;
     p.ivalue = 0;
     VGAController.addPrimitive(p);
-#endif
 
-#ifdef use_lib_vectortiny
-#ifdef use_lib_remove_fabgl_queue
-#else
     p.cmd = fabgl::PrimitiveCmd::SetPenColor;
     p.color = Color::White;
     VGAController.addPrimitive(p);
-#endif
 
     for (v = 0; v < vector_draw_cnt; v++) {
         x0 = (int)(vectors_draw[v].x0);
@@ -309,37 +200,27 @@ void VGA_osint_render() {
             x0 = offx + x0 / scl_factor;
             y0 = offy + y0 / scl_factor;
 
-#ifdef use_lib_remove_fabgl_queue
-            draw_pixel_bresenham(x0, y0);
-#else
             p.cmd = fabgl::PrimitiveCmd::SetPixelAt;
             auxPoint = {x0, y0};
             p.pixelDesc = {auxPoint, Color::White};
             VGAController.addPrimitive(p);
-#endif
 
         } else { // Linea
             x0 = offx + x0 / scl_factor;
             y0 = offy + y0 / scl_factor;
             x1 = offx + x1 / scl_factor;
             y1 = offy + y1 / scl_factor;
-#ifdef use_lib_remove_fabgl_queue
-            draw_line_bresenham(x0, y0, x1, y1);
-#else
+
             p.cmd = fabgl::PrimitiveCmd::MoveTo;
             p.position = Point(x0, y0);
             VGAController.addPrimitive(p);
             p.cmd = fabgl::PrimitiveCmd::LineTo;
             p.position = Point(x1, y1);
             VGAController.addPrimitive(p);
-#endif
         }
     }
 
-#ifdef use_lib_remove_fabgl_queue
-#else
     VGAController.processPrimitives();
-#endif
 
     vga_end = micros();
     unsigned int time_prev = vga_end - vga_begin;
@@ -350,25 +231,8 @@ void VGA_osint_render() {
     if (time_prev > gb_stats_video_max_unified) {
         gb_stats_video_max_unified = time_prev;
     }
-#else
-    for (v = 0; v < vector_draw_cnt; v++) {
-        Uint8 c = vectors_draw[v].color * 256 / VECTREX_COLORS;
-        x0 = vectors_draw[v].x0;
-        y0 = vectors_draw[v].y0;
-        x1 = vectors_draw[v].x1;
-        y1 = vectors_draw[v].y1;
-
-        jj_aalineRGBA(screen, (offx + x0 / scl_factor), (offy + y0 / scl_factor), (offx + x1 / scl_factor),
-                      (offy + y1 / scl_factor), c, c, c, 0xff);
-
-    }
-#endif
-
 #endif
 }
-
-static char *romfilename = "rom.dat";
-static char *cartfilename = NULL;
 
 static void initLoadROM() {
 #ifdef use_lib_rom_no_use_ram
@@ -386,7 +250,6 @@ static void initLoadROM() {
     memset(cart, 0, sizeof(cart));
 #endif
 
-#ifdef use_lib_cartdridge_flash_ram
 #ifdef use_lib_log_serial
     Serial.printf("Load cartdridge FLASH id:%d size:%d\n", gb_id_cur_rom, gb_list_cart_size[gb_id_cur_rom]);
 #endif
@@ -405,22 +268,6 @@ static void initLoadROM() {
     cart = gb_list_rom_data[gb_id_cur_rom];
 #else
     memcpy(cart, gb_list_rom_data[gb_id_cur_rom], topeCartBytes);
-#endif
-
-#else
-    if (cartfilename) {
-        FILE *f;
-        if (!(f = fopen(cartfilename, "rb"))) {
-            perror(cartfilename);
-            printf("Invalid cart\n");
-            // fflush(stdout);
-            exit(EXIT_FAILURE);
-        }
-        printf("Load cartdridge %s\n", cartfilename);
-        // fflush(stdout);
-        fread(cart, 1, sizeof(cart), f);
-        fclose(f);
-    }
 #endif
 }
 

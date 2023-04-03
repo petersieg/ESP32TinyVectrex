@@ -5,9 +5,7 @@
  #define use_lib_gfx
 
  #define use_lib_vectortiny
- 
- #define use_lib_regtiny
- 
+  
  #define use_lib_cartdridge_flash_ram
  
  //Salida log puerto serie usb

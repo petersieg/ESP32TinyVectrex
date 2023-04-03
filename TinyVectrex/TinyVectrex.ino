@@ -1,5 +1,5 @@
 //Port x86 John Hawthorn to ESP32 TTGO VGA v1.x by ackerman
-//Port to DAC output to oscilloskop in X-Y mode by OzmoOsmo
+//Port to DAC output to oscilloskop in X-Y mode by OzmoOzmo
 //Support 1024x768
 //VGA2Controller 1 bpp
 //Arduino IDE 1.8.19 Espressif System 1.0.6
@@ -8,7 +8,6 @@
 
 #include "gbConfig.h"
 #include "fabgl.h"
-#include "WiFiGeneric.h" //Para que compile
 #include "gbGlobals.h"
 #include "osint.h"
 
