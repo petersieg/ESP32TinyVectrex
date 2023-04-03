@@ -317,12 +317,6 @@ void alg_update ()
 
 		if ((via_orb & 0x01) == 0x00) {
 			/* demultiplexor is on */
-
-			//if (alg_xsh > 0x80) {
-			//	alg_zsh = alg_xsh - 0x80;
-			//} else {
-			//	alg_zsh = 0;
-			//}
 			alg_zsh= (alg_xsh > 0x80) ? (alg_xsh - 0x80) : 0;
 		}
 
@@ -334,12 +328,6 @@ void alg_update ()
 	}
 
 	/* compare the current joystick direction with a reference */
-
-	//if (alg_jsh > alg_xsh) {
-	//	alg_compare = 0x20;
-	//} else {
-	//	alg_compare = 0;
-	//}
 	alg_compare = (alg_jsh > alg_xsh) ? 0x20 : 0;
 
 	/* compute the new "deltas" */
@@ -981,28 +969,7 @@ static inline void alg_addline (long x0, long y0, long x1, long y1, unsigned cha
 	unsigned long key;
 	long index;
    #endif	
-	
-
-  //gb_time_now= millis();
-  //if ((gb_time_now - gb_time_vga_before)> (gb_ms_vga-1)) //20 ms
-  //{
-  // return;
-  //}
-  //if ((gb_fps_unified & 0x03) != 0x00)
-  //{
-  // vector_draw_cnt = 0;
-  // return;
-  //}
-
-
-
-	#ifdef use_lib_vectortiny
-	 //x0= x0/100;
-	 //y0= y0/100;
-	 //x1= x1/100;
-	 //y1= y1/100;
-	#endif
-    
+	    
    #ifdef use_lib_vectortiny
 	key = (unsigned int) x0;
 	key = key * 31 + (unsigned int) y0;
@@ -1095,11 +1062,6 @@ static inline void alg_addline (long x0, long y0, long x1, long y1, unsigned cha
 		sig_dx = (ALG_MAX_X >> 1) - alg_curr_x;
 		sig_dy = (ALG_MAX_Y >>1) - alg_curr_y;
 	} else {
-		//if (via_acr & 0x80) {
-		//	sig_ramp = via_t1pb7;
-		//} else {
-		//	sig_ramp = via_orb & 0x80;
-		//}
 		sig_ramp = (via_acr & 0x80) ? via_t1pb7 : (via_orb & 0x80);
 
 		if (sig_ramp == 0) {
@@ -1216,13 +1178,6 @@ void vecx_emu (long cycles, int ahead)
 
  #ifdef use_lib_optimice_call_via_sstep0   
   start_via_sstep0:
-	//unsigned char t2shift;
-
-	//if ((gb_fps_unified & 0x01) != 0)
-	//{
-	// //vector_draw_cnt=0;
-	// goto return_via_sstep0;	 
-	//}
 
 	if (via_t1on) 
 	{
@@ -1331,28 +1286,7 @@ void vecx_emu (long cycles, int ahead)
  #ifdef use_lib_optimice_call_alg_sstep
   start_alg_sstep:
 
-   //#ifdef use_lib_vectortiny
-   // int sig_dx, sig_dy;
-   //#else
-   // long sig_dx, sig_dy;
-   //#endif	
-   //unsigned int sig_ramp;
-   //unsigned int sig_blank;
-
-	//if ((via_acr & 0x10) == 0x10) {
-	//	sig_blank = via_cb2s;
-	//} else {
-	//	sig_blank = via_cb2h;
-	//}
-
 	sig_blank= ((via_acr & 0x10) == 0x10) ? via_cb2s : via_cb2h;
-
-	//if ((gb_fps_unified & 0x01) != 0)
-	//if ((gb_fps_unified & 0x03) != 0)
-	//{
-	// //vector_draw_cnt=0;
-	// goto return_alg_sstep;
-	//}
 
 	if (via_ca2 == 0) {
 		sig_dx = (ALG_MAX_X >> 1) - alg_curr_x;
@@ -1459,10 +1393,6 @@ void vecx_emu (long cycles, int ahead)
     via_sstep1();		
    }
   }
-  //else
-  //{
-  // vector_draw_cnt=0;
-  //}//fin if frames impares
 
   #ifdef use_lib_vectortiny
    cycles -= icycles;
@@ -1478,18 +1408,10 @@ void vecx_emu (long cycles, int ahead)
 
    fcycles += FCYCLES_INIT;
 
-   //Solo dibujar cada 20 ms 50 fps
-   //if ((gb_fps_unified & 0x01) == 0x01)
    {
-//    gb_time_now= millis();
-    //if ((gb_time_now - gb_time_vga_before)>= (gb_ms_vga-1)) //20 ms      
-	//if ((gb_fps_unified & 0x07) == 0)
     {
-//     gb_time_vga_before= gb_time_now;
 	 #ifdef use_lib_gfx	 
 	  osint_render();
-	  //uint8_t* ptrLine= VGAController.getScanline(10);
-	  //memset(ptrLine,0xFF,10);
 	 #endif 
     }
    }
