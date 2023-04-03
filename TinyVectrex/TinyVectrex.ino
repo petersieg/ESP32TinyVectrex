@@ -34,6 +34,7 @@ unsigned long gb_fps_ini_unified= 0;
 unsigned int gb_time_vga_before=0;
 unsigned int gb_time_now=0;
 
+/*
 #ifdef use_lib_remove_fabgl_queue
  uint8_t * gb_buffer_vga[768];
  void PreparaBitluniVGA(void);
@@ -49,14 +50,14 @@ unsigned int gb_time_now=0;
   }  
  }
 #endif 
-
+*/
 
 void setup()
 {
   #ifdef use_lib_log_serial
    Serial.begin(115200);
   #endif 
-
+ /*
   #ifdef use_lib_wifi
    cart= (unsigned char *)malloc(32768); //Ahorro memoria WIFI   
   #endif
@@ -81,10 +82,10 @@ void setup()
   #ifdef use_lib_remove_fabgl_queue
    PreparaBitluniVGA();
   #endif
-
+*/
   #ifdef use_lib_log_serial
-   Serial.printf("Width:%d Hi:%d\n",VGAController.getScreenWidth(),VGAController.getScreenHeight());
-   Serial.printf("View Width:%d Hi:%d\n",VGAController.getViewPortWidth(),VGAController.getViewPortHeight());
+   //Serial.printf("Width:%d Hi:%d\n",VGAController.getScreenWidth(),VGAController.getScreenHeight());
+   //Serial.printf("View Width:%d Hi:%d\n",VGAController.getViewPortWidth(),VGAController.getViewPortHeight());
    Serial.printf("END SETUP %d\n", ESP.getFreeHeap());
   #endif 
 }
