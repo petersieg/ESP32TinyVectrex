@@ -159,11 +159,8 @@ static inline unsigned char test_n (unsigned char r)
 
 //JJstatic einline unsigned test_z8 (unsigned r)
 //static inline unsigned char test_z8 (unsigned char r)
-#ifdef use_lib_wifi
  static unsigned char test_z8 (unsigned char r)
-#else
- static unsigned char IRAM_ATTR test_z8 (unsigned char r)
-#endif
+
  {//4711 veces 1 frame
 	//JJ unsigned flag;
 	unsigned char flag;
@@ -181,11 +178,7 @@ static inline unsigned char test_n (unsigned char r)
 //JJ static einline unsigned test_z16 (unsigned r)
 #ifdef use_lib_optimice_test_z16
  //static inline unsigned char test_z16 (unsigned short int r)
- #ifdef use_lib_wifi
   static unsigned char test_z16 (unsigned short int r)
- #else
-  static unsigned char IRAM_ATTR test_z16 (unsigned short int r)
- #endif 
 #else
  static inline unsigned char test_z16 (unsigned r)
 #endif
@@ -208,11 +201,7 @@ static inline unsigned char test_n (unsigned char r)
 //inputs. 
 #ifdef use_lib_optimice_test_v
  //static inline unsigned char test_v (unsigned char i0, unsigned char i1, unsigned char r)
- #ifdef use_lib_wifi
   static unsigned char test_v (unsigned char i0, unsigned char i1, unsigned char r)
- #else
-  static unsigned char IRAM_ATTR test_v (unsigned char i0, unsigned char i1, unsigned char r)
- #endif 
 #else
  static inline unsigned test_v (unsigned i0, unsigned i1, unsigned r)
 #endif 
@@ -357,11 +346,8 @@ static inline void set_reg_d (unsigned short int value)
 #ifdef use_lib_optimice_pc_read8
  //static inline unsigned char pc_read8 (void)
  //static unsigned char pc_read8 (void)
- #ifdef use_lib_wifi
   static unsigned char pc_read8(void)
- #else
-  static unsigned char IRAM_ATTR pc_read8(void)
- #endif 
+
  {//15311 veces 1 frame
   //unsigned char data;
   //data = read8(reg_pc);
@@ -395,11 +381,8 @@ static inline void set_reg_d (unsigned short int value)
 //read a word from the address pointed to by the pc
 #ifdef use_lib_optimice_pc_read16
  //static inline unsigned short int pc_read16 (void)
- #ifdef use_lib_wifi
   static unsigned short int pc_read16 (void)
- #else
-  static unsigned short int IRAM_ATTR pc_read16 (void)
- #endif 
+  
  {//548 veces 1 frame
 //  unsigned short int data;
 //  data = read16(reg_pc);
@@ -932,13 +915,9 @@ static inline void set_reg_d (unsigned short int value)
 //instruction: tst
 #ifdef use_lib_optimice_inst_tst8
  //inline void inst_tst8 (unsigned char data)
- #ifdef use_lib_wifi
   void inst_tst8 (unsigned char data)
- #else
-  void IRAM_ATTR inst_tst8 (unsigned char data)
- #endif 
 #else
- inline void inst_tst8 (unsigned data)
+  inline void inst_tst8 (unsigned data)
 #endif 
 {//3261 por frame
 	set_cc (FLAG_N, test_n (data));
@@ -1015,11 +994,7 @@ unsigned inst_sbc (unsigned data0, unsigned data1)
 //only 8-bit version, 16-bit version not needed.
 #ifdef use_lib_optimice_inst_and
  //inline unsigned char inst_and (unsigned char data0, unsigned char data1)
- #ifdef use_lib_wifi
   unsigned char inst_and (unsigned char data0, unsigned char data1)
- #else
-  unsigned char IRAM_ATTR inst_and (unsigned char data0, unsigned char data1)
- #endif
 #else
  inline unsigned inst_and (unsigned data0, unsigned data1)
 #endif 
@@ -1153,11 +1128,8 @@ unsigned inst_sub16 (unsigned data0, unsigned data1)
 /* instruction: 8-bit offset branch */
 
 //inline void inst_bra8 (unsigned test, unsigned op, unsigned *cycles)
-#ifdef use_lib_wifi
  void inst_bra8 (unsigned test, unsigned op, unsigned *cycles)
-#else
- void IRAM_ATTR inst_bra8 (unsigned test, unsigned op, unsigned *cycles)
-#endif 
+ 
 {//1800 a 2000 por frame
 	unsigned offset, mask;
 

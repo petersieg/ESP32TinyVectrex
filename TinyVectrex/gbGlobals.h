@@ -2,7 +2,6 @@
  #define _GB_GLOBAL_H
   
  #include "gbConfig.h"
- #include "fabgl.h"
 
  extern unsigned int gb_time_vga_before;
  extern unsigned int gb_time_now;
@@ -17,21 +16,7 @@
  extern unsigned long gb_fps_time_ini_unified;
  extern unsigned long gb_fps_unified;
  extern unsigned long gb_fps_ini_unified;
- 
- #ifdef use_lib_gfx  
-  //class VGA2DirectControllerPublic : public fabgl::VGAController
-  class VGA2DirectControllerPublic : public fabgl::VGA2Controller
-  {
-   public:
-    unsigned char GetISRHandle()
-    {
-     return 0;
-    }
-  };
-
-  extern VGA2DirectControllerPublic VGAController;
- #endif
-   
+    
  extern unsigned char gb_load_new_rom;
  extern unsigned char gb_id_cur_rom; //rom actual 
  

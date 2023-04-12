@@ -1,3 +1,4 @@
+#include <driver/gpio.h>  // for gpio_num_t declaration
 #include <driver/dac.h>
 #include <soc/rtc.h>
 #include <soc/sens_reg.h>

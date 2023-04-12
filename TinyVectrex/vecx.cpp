@@ -360,11 +360,7 @@ void alg_update ()
 #endif 
 
 #ifdef use_lib_optimice_readwrite8
- #ifdef use_lib_wifi
   unsigned char read8 (unsigned short int address)
- #else
-  unsigned char IRAM_ATTR read8 (unsigned short int address)
- #endif 
 #else
  unsigned char read8 (unsigned address)
 #endif 
@@ -515,11 +511,7 @@ void alg_update ()
 }
 
 #ifdef use_lib_optimice_readwrite8
- #ifdef use_lib_wifi
   void write8 (unsigned short int address, unsigned char data)
- #else
-  void IRAM_ATTR write8 (unsigned short int address, unsigned char data)
- #endif 
 #else
  void write8 (unsigned address, unsigned char data)
 #endif 
@@ -959,7 +951,7 @@ void vecx_reset (void)
 #ifdef use_lib_vectortiny
  void alg_addline (short int x0, short int y0, short int x1, short int y1, unsigned char color)
 #else
-static inline void alg_addline (long x0, long y0, long x1, long y1, unsigned char color)
+ static inline void alg_addline (long x0, long y0, long x1, long y1, unsigned char color)
 #endif
 {
    #ifdef use_lib_vectortiny
