@@ -1,9 +1,8 @@
 //Port x86 John Hawthorn to ESP32 TTGO VGA v1.x by ackerman
 //Port to DAC output to oscilloskop in X-Y mode by OzmoOzmo
-//Support 1024x768
-//VGA2Controller 1 bpp
 //Arduino IDE 1.8.19 Espressif System 1.0.6
 //March 2023 P.Sieg - removed: PS2*, OSD, WIFI + cleanups uncommented/unnused sections
+//April 2023 P.Sieg - removed remaining fabgl leftovers
 
 #include "gbConfig.h"
 #include "gbGlobals.h"
