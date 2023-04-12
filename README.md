@@ -54,7 +54,8 @@ Modifications from TTGO VGA32 version:
  <li>Removed all PS2 keyboard support - now uses esp32 pins for input - see FastDac.h</li>
  <li>Removed all OSD stuff - P.Sieg March 2023</li>
  <li>Removed all WIFI stuff - P.Sieg March 2023</li>
- <li>Removed all DEMOS after seeing, that thay don't run fine - P.Sieg March 2023</li>
+ <li>Removed all DEMOS after seeing, that they don't run fine - P.Sieg March 2023</li>
+ <li>Removed all fabgl dependencies - no longer need fabgl lib - P.Sieg April 2023</li>
  <li>Unfortunitely no vga means loosing Ackermans menus</li>
 </ul>
 
@@ -63,7 +64,7 @@ Modifications from TTGO VGA32 version:
 Required:
  <ul>
   <li>Any ESP32 board which gives access to both DAC Pin 26 + 25 and other defined Pins in FastDac.h for keypad</li>
-  <li>or Arduino IDE 1.8.11 (or better) with ESP32 addon for Arduino IDE from Espressif System Version 1.0.6</li>
+  <li>Arduino IDE 1.8.11 (or better) with ESP32 addon for Arduino IDE from Espressif System Version 1.0.6</li>
  </ul>
 
 
@@ -89,8 +90,7 @@ The whole project is compatible with the Arduino 1.8.11 framework.
 We only have to open the <b>TinyVectrex.ino</b> in the <b>TinyVectrex</b> directory.
 <center><img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/previewArduinoIDEpreferences.gif'></center>
 We must install the espressif extensions in the additional card urls manager <b>https://dl.espressif.com/dl/package_esp32_index.json</b>
-<br>For video, <b>fabgl 1.0.8 or 1.0.9</b> must be installed.
-<center><img src='https://github.com/petersieg/ESP32_TinyVectrex/blob/main/previewFabglVersion.gif'></center>
+<br>
 We must deactivate the PSRAM option, and in case of exceeding 1 MB of binary, select 4 MB of partition when uploading. Although the code does not use PSRAM, if the option is active and our ESP32 does not have it, an exception will be generated and it will restart in loop mode.
 
  
