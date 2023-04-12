@@ -120,7 +120,6 @@ void drawline(int x1, int y1, int x2, int y2) {
 }
 
 void osint_render() {
-    unsigned int vga_begin = micros();
 
     int x0, x1, y0, y1;
     DACPrepare(true);
@@ -137,102 +136,8 @@ void osint_render() {
     // Serial.print(vector_draw_cnt / (millis() - t));
     // Serial.println(" Sa/s");
     drawdot(0, 0);
-
-    unsigned int vga_end = micros();
-    unsigned int time_prev = vga_end - vga_begin;
-    gb_stats_video_cur_unified = time_prev;
-    if (time_prev < gb_stats_video_min_unified) {
-        gb_stats_video_min_unified = time_prev;
-    }
-    if (time_prev > gb_stats_video_max_unified) {
-        gb_stats_video_max_unified = time_prev;
-    }
 }
 
-  void VGA_osint_render() {
-    // Portar SDL_FillRect(screen, NULL, 0);
-    int v;
-    // unsigned int x0,x1,y0,y1;
-    int x0, x1, y0, y1;
-    unsigned int vga_begin, vga_end;
-
-    vga_begin = micros();
-
-    if (vector_draw_cnt <= 0) {
-        vga_end = micros();
-        unsigned int time_prev = vga_end - vga_begin;
-        gb_stats_video_cur_unified = time_prev;
-        if (time_prev < gb_stats_video_min_unified) {
-            gb_stats_video_min_unified = time_prev;
-        }
-        if (time_prev > gb_stats_video_max_unified) {
-            gb_stats_video_max_unified = time_prev;
-        }
-        return;
-    }
-
-#ifdef use_lib_gfx
-    Canvas cv(&VGAController);
-    fabgl::Primitive p;
-    Point auxPoint;
-
-    p.cmd = fabgl::PrimitiveCmd::SetPenColor;
-    p.color = Color::Black;
-    VGAController.addPrimitive(p);
-    p.cmd = fabgl::PrimitiveCmd::SetBrushColor;
-    p.color = Color::Black;
-    VGAController.addPrimitive(p);
-    p.cmd = fabgl::PrimitiveCmd::Clear;
-    p.ivalue = 0;
-    VGAController.addPrimitive(p);
-
-    p.cmd = fabgl::PrimitiveCmd::SetPenColor;
-    p.color = Color::White;
-    VGAController.addPrimitive(p);
-
-    for (v = 0; v < vector_draw_cnt; v++) {
-        x0 = (int)(vectors_draw[v].x0);
-        y0 = (int)(vectors_draw[v].y0);
-        x1 = (int)(vectors_draw[v].x1);
-        y1 = (int)(vectors_draw[v].y1);
-
-        if ((x0 == x1) && (y0 == y1)) { // Punto
-            x0 = offx + x0 / scl_factor;
-            y0 = offy + y0 / scl_factor;
-
-            p.cmd = fabgl::PrimitiveCmd::SetPixelAt;
-            auxPoint = {x0, y0};
-            p.pixelDesc = {auxPoint, Color::White};
-            VGAController.addPrimitive(p);
-
-        } else { // Linea
-            x0 = offx + x0 / scl_factor;
-            y0 = offy + y0 / scl_factor;
-            x1 = offx + x1 / scl_factor;
-            y1 = offy + y1 / scl_factor;
-
-            p.cmd = fabgl::PrimitiveCmd::MoveTo;
-            p.position = Point(x0, y0);
-            VGAController.addPrimitive(p);
-            p.cmd = fabgl::PrimitiveCmd::LineTo;
-            p.position = Point(x1, y1);
-            VGAController.addPrimitive(p);
-        }
-    }
-
-    VGAController.processPrimitives();
-
-    vga_end = micros();
-    unsigned int time_prev = vga_end - vga_begin;
-    gb_stats_video_cur_unified = time_prev;
-    if (time_prev < gb_stats_video_min_unified) {
-        gb_stats_video_min_unified = time_prev;
-    }
-    if (time_prev > gb_stats_video_max_unified) {
-        gb_stats_video_max_unified = time_prev;
-    }
-#endif
-}
 
 static void initLoadROM() {
 #ifdef use_lib_rom_no_use_ram
