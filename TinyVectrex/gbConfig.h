@@ -3,8 +3,6 @@
  
  //Medir rendimiento sin usar fabgl video
  #define use_lib_gfx
-
- #define use_lib_vectortiny
   
  #define use_lib_cartdridge_flash_ram
  

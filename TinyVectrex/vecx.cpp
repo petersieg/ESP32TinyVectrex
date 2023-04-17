@@ -158,17 +158,10 @@ static unsigned int alg_jsh;  /* joystick sample and hold */
 
 static unsigned int alg_compare;
 
-#ifdef use_lib_vectortiny
- static int alg_dx;     //delta x
- static int alg_dy;     //delta y
- static int alg_curr_x; //current x position
- static int alg_curr_y; //current y position
-#else
- static long alg_dx;     //delta x
- static long alg_dy;     //delta y
- static long alg_curr_x; //current x position
- static long alg_curr_y; //current y position
-#endif 
+static int alg_dx;     //delta x
+static int alg_dy;     //delta y
+static int alg_curr_x; //current x position
+static int alg_curr_y; //current y position
 
 enum {
 	VECTREX_PDECAY	= 30,      /* phosphor decay rate */
@@ -181,57 +174,30 @@ enum {
 	// one only needs VECTREX_MHZ / VECTREX_PDECAY but we need to also store
 	// deleted vectors in a single table
 	 
-	#ifdef use_lib_vectortiny
- 	 VECTOR_CNT= 1200, //Dibujo maximo 1200 vectores
- 	 VECTOR_HASH= 1200
-	#else
-  	 VECTOR_CNT		= VECTREX_MHZ / VECTREX_PDECAY,
-  	 VECTOR_HASH     = 65521
-    #endif		
+ 	VECTOR_CNT= 1200, //Dibujo maximo 1200 vectores
+ 	VECTOR_HASH= 1200
 };
 
 //static unsigned int alg_vectoring; /* are we drawing a vector right now? */
 static unsigned char alg_vectoring; /* are we drawing a vector right now? */
-#ifdef use_lib_vectortiny
- static short int alg_vector_x0;
- static short int alg_vector_y0;
- static short int alg_vector_x1;
- static short int alg_vector_y1;
- static short int alg_vector_dx;
- static short int alg_vector_dy;
-#else
- static long alg_vector_x0;
- static long alg_vector_y0;
- static long alg_vector_x1;
- static long alg_vector_y1;
- static long alg_vector_dx;
- static long alg_vector_dy;
-#endif 
+static short int alg_vector_x0;
+static short int alg_vector_y0;
+static short int alg_vector_x1;
+static short int alg_vector_y1;
+static short int alg_vector_dx;
+static short int alg_vector_dy;
 static unsigned char alg_vector_color;
 
-#ifdef use_lib_vectortiny
- int vector_draw_cnt;
- int vector_erse_cnt;
-#else
- long vector_draw_cnt;
- long vector_erse_cnt;
-#endif 
+int vector_draw_cnt;
+int vector_erse_cnt;
 static vector_t vectors_set[2 * VECTOR_CNT];
 vector_t *vectors_draw;
 vector_t *vectors_erse;
 
 
-#ifdef use_lib_vectortiny
- static unsigned short int vector_hash[VECTOR_HASH];
-#else
- static long vector_hash[VECTOR_HASH];
-#endif 
+static unsigned short int vector_hash[VECTOR_HASH];
 
-#ifdef use_lib_vectortiny
- static int fcycles;
-#else
- static long fcycles;
-#endif 
+static int fcycles;
  
 
 //***********************************
@@ -332,13 +298,8 @@ void alg_update ()
 
 	/* compute the new "deltas" */
 
-   #ifdef use_lib_vectortiny
 	alg_dx = (int)alg_xsh - (int)alg_rsh;
 	alg_dy = (int)alg_rsh - (int)alg_ysh;   
-   #else
-	alg_dx = (long) alg_xsh - (long) alg_rsh;
-	alg_dy = (long) alg_rsh - (long) alg_ysh;
-   #endif
 }
 
 /* update IRQ and bit-7 of the ifr register after making an adjustment to
@@ -948,34 +909,17 @@ void vecx_reset (void)
  }
 #endif 
 
-#ifdef use_lib_vectortiny
- void alg_addline (short int x0, short int y0, short int x1, short int y1, unsigned char color)
-#else
- static inline void alg_addline (long x0, long y0, long x1, long y1, unsigned char color)
-#endif
+void alg_addline (short int x0, short int y0, short int x1, short int y1, unsigned char color)
 {
-   #ifdef use_lib_vectortiny
     unsigned int key;
     int index;
-   #else
-	unsigned long key;
-	long index;
-   #endif	
 	    
-   #ifdef use_lib_vectortiny
 	key = (unsigned int) x0;
 	key = key * 31 + (unsigned int) y0;
 	key = key * 31 + (unsigned int) x1;
 	key = key * 31 + (unsigned int) y1;
 	key %= VECTOR_HASH;   
-   #else
-	key = (unsigned long) x0;
-	key = key * 31 + (unsigned long) y0;
-	key = key * 31 + (unsigned long) x1;
-	key = key * 31 + (unsigned long) y1;
-	key %= VECTOR_HASH;
-   #endif 	
-
+ 
 	/* first check if the line to be drawn is in the current draw list.
 	 * if it is, then it is not added again.
 	 */
@@ -987,10 +931,7 @@ void vecx_reset (void)
 		y0 == vectors_draw[index].y0 &&
 		x1 == vectors_draw[index].x1 &&
 		y1 == vectors_draw[index].y1){
-        #ifndef use_lib_vectortiny              
-		 vectors_draw[index].color = color;
-		#endif 
-	} else {
+ 	} else {
 		/* missed on the draw list, now check if the line to be drawn is in
 		 * the erase list ... if it is, "invalidate" it on the erase list.
 		 */
@@ -1000,24 +941,13 @@ void vecx_reset (void)
 			y0 == vectors_erse[index].y0 &&
 			x1 == vectors_erse[index].x1 &&
 			y1 == vectors_erse[index].y1) {
-            #ifndef use_lib_vectortiny
-  			 vectors_erse[index].color = VECTREX_COLORS;
-  			#endif 
-		}
+ 		}
 
-        #ifdef use_lib_vectortiny
-		 vectors_draw[vector_draw_cnt].x0 = x0; //Ya esta DIV 4
- 		 vectors_draw[vector_draw_cnt].y0 = y0;
-		 vectors_draw[vector_draw_cnt].x1 = x1;
-		 vectors_draw[vector_draw_cnt].y1 = y1;		
- 		 //vectors_draw[vector_draw_cnt].color = color; //No uso color en tiny
- 		#else
-		 vectors_draw[vector_draw_cnt].x0 = x0;
- 		 vectors_draw[vector_draw_cnt].y0 = y0;
-		 vectors_draw[vector_draw_cnt].x1 = x1;
-		 vectors_draw[vector_draw_cnt].y1 = y1;		
- 		 vectors_draw[vector_draw_cnt].color = color;
- 		#endif 
+		vectors_draw[vector_draw_cnt].x0 = x0; //Ya esta DIV 4
+ 		vectors_draw[vector_draw_cnt].y0 = y0;
+		vectors_draw[vector_draw_cnt].x1 = x1;
+		vectors_draw[vector_draw_cnt].y1 = y1;		
+ 		//vectors_draw[vector_draw_cnt].color = color; //No uso color en tiny
 		vector_hash[key] = vector_draw_cnt;
 		vector_draw_cnt++;
 	}
@@ -1030,11 +960,7 @@ void vecx_reset (void)
 #ifndef use_lib_optimice_call_alg_sstep
  void alg_sstep ()
  {
-   #ifdef use_lib_vectortiny
     int sig_dx, sig_dy;
-   #else
-	long sig_dx, sig_dy;
-   #endif	
 	unsigned int sig_ramp;
 	unsigned int sig_blank;
 
@@ -1148,21 +1074,13 @@ void vecx_reset (void)
 #endif
 
 #ifdef use_lib_optimice_call_alg_sstep
- #ifdef use_lib_vectortiny
-  static int sig_dx, sig_dy;
- #else
-  static long sig_dx, sig_dy;
- #endif
+ static int sig_dx, sig_dy;
  static unsigned int sig_ramp;
  static unsigned int sig_blank; 
 #endif
 
 
-#ifdef use_lib_vectortiny
 void vecx_emu (int cycles, int ahead)
-#else
-void vecx_emu (long cycles, int ahead)
-#endif
 {
  unsigned int c, icycles;
 
@@ -1386,13 +1304,8 @@ void vecx_emu (long cycles, int ahead)
    }
   }
 
-  #ifdef use_lib_vectortiny
-   cycles -= icycles;
-   fcycles -= icycles;
-  #else
-   cycles -= (long) icycles;
-   fcycles -= (long) icycles;
-  #endif
+  cycles -= icycles;
+  fcycles -= icycles;
 
   if (fcycles < 0) 
   {

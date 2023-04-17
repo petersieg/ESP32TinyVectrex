@@ -10,20 +10,11 @@ enum {
 	ALG_MAX_Y		= 41000
 };
 
-#ifdef use_lib_vectortiny
  typedef struct vector_type
  {
   unsigned short int x0, y0; //start coordinate
   unsigned short int x1, y1; //end coordinate
  } vector_t;
-#else
- typedef struct vector_type
- {
-  long x0, y0; //start coordinate
-  long x1, y1; //end coordinate
-  unsigned char color;
- } vector_t;
-#endif 
 
 #ifdef use_lib_snd_regs_8bits
  extern unsigned char snd_regs[16];
@@ -42,24 +33,14 @@ enum {
  extern unsigned int alg_jch3;
 #endif 
 
-#ifdef use_lib_vectortiny
- extern int vector_draw_cnt;
- extern int vector_erse_cnt;
-#else
- extern long vector_draw_cnt;
- extern long vector_erse_cnt;
-#endif 
+extern int vector_draw_cnt;
+extern int vector_erse_cnt;
 
 extern vector_t *vectors_draw;
 extern vector_t *vectors_erse;
 
 void vecx_reset (void);
-#ifdef use_lib_vectortiny
- void vecx_emu (int cycles, int ahead);
-#else
- void vecx_emu (long cycles, int ahead);
-#endif 
-
+void vecx_emu (int cycles, int ahead);
 
 int GetSizeBytes_vectors_set(void);
 int GetSizeBytes_vector_hash(void);
