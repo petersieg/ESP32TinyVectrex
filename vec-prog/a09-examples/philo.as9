@@ -1,0 +1,403 @@
+; (c) 2007 Peter.Sieg1@gmx.de
+; Released under GNU GPL V2
+; thanks to Christopher Salomon
+;
+;
+
+            INCLUDE "VECTREX.I"
+
+; *** Needed variables
+value1	equ	$c881
+value2	equ	$c882
+value3	equ	$c883
+value4	equ	$c884
+
+		org     0000
+
+            fcc     "g GCE SIEG"
+            FCB     $80
+
+            FDB     $FF8F
+
+            FDB     $F848
+            FDB     $20D0
+            fcb     "PHILOSOPHICALS"
+            FCB     $80
+
+            FCB     $00
+Start0:
+		lda     #255
+		sta     value1
+		jsr     Random
+            anda    #$f
+		sta     value2
+Start1:
+		lda     value2
+		cmpa    #15
+		beq     start15
+		cmpa    #14
+		beq     start14
+		cmpa    #13
+		beq     start13
+		cmpa    #12
+		beq     start12
+		cmpa    #11
+		beq     start11
+		cmpa    #10
+		beq     start10
+		cmpa    #9
+		beq     start9
+		cmpa    #8
+		beq     start8
+		cmpa    #7
+		beq     start7
+		cmpa    #6
+		beq     start6
+		cmpa    #5
+		beq     start5
+            cmpa    #4
+            beq     start4
+            cmpa    #3
+            beq     start3
+            cmpa    #2
+            beq     start2	
+		LDU     #Text1
+		bra     loop
+start2:	LDU     #Text2
+		bra     loop
+start3:	LDU     #Text3
+		bra     loop
+start4:	LDU     #Text4
+		bra     loop
+start5:	LDU     #Text5
+		bra     loop
+start6:	LDU     #Text6
+		bra     loop
+start7:	LDU     #Text7
+		bra     loop
+start8:	LDU     #Text8
+		bra     loop
+start9:	LDU     #Text9
+		bra     loop
+start10:	LDU     #Text10
+		bra     loop
+start11:	LDU     #Text11
+		bra     loop
+start12:	LDU     #Text12
+		bra     loop
+start13:	LDU     #Text13
+		bra     loop
+start14:	LDU     #Text14
+		bra     loop
+start15:	LDU     #Text15
+		bra     loop
+Loop:       JSR     DP_to_D0
+
+            JSR     Print_List
+
+            LDD     ,U
+            BNE     Loop
+
+            JSR     DP_to_C8
+;           LDU     #music
+;           JSR     Init_Music_chk
+            JSR     Wait_Recal
+
+		jsr     delay
+		
+		lda     value1
+		deca
+		sta	  value1
+		cmpa    #0
+		beq     Loop1
+            lbra    Start1
+Loop1:
+            lBRA    Start0
+
+; end of main program
+; subroutine sections starts from here
+
+delay:
+            ldb     #255		 ; delay value
+	      jsr     Delay_b		 ; wait a while
+	      rts
+
+; constants section starts here
+
+Text1:      FCB     100,-120          ; y,x
+            fcc     "TRAEUME NICHT DEIN LEBEN"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "LEBE DEINEN TRAUM."
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     " "
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     " "
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text2:      FCB     100,-120          ; y,x
+            fcc     "SELBST EINE REISE"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "VON TAUSEND MEILEN"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "BEGINT MIT DEM"
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     "ERSTEN SCHRITT."
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text3:      FCB     100,-120          ; y,x
+            fcc     "TRITT NICHT IN DIE FUSS-"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "STAPFEN ANDERER"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "DU HINTERLAEST SONST"
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     "SELBST KEINE SPUREN."
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text4:      FCB     100,-120          ; y,x
+            fcc     "AUGE UM AUGE"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "BEDEUTET NUR"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "DASS DIE WELT"
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     "ERBLINDET."
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text5:      FCB     100,-120          ; y,x
+            fcc     "DER IDEALISMUS"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "WAECHST"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "MIT DER ENTFERNUNG"
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     "VOM PROBLEM."
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text6:      FCB     100,-120          ; y,x
+            fcc     "PHANTASIE IST WICHTIGER"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "ALS WISSEN"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "DENN WISSEN IST BEGRENZT."
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     " "
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text7:      FCB     100,-120          ; y,x
+            fcc     "WER KEINEN MUT"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "ZUM TRAEUMEN HAT"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "HAT KEINE KRAFT"
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     "ZUM KAEMPFEN."
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text8:      FCB     100,-120          ; y,x
+            fcc     "DER DER ICH BIN"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "GRUESST TRAURIG DEN"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "DER ICH SEIN MOECHTE."
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     " "
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text9:      FCB     100,-120          ; y,x
+            fcc     "FEHLER DIE WIR EINSEHEN"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "KOENNEN NICHT MEHR"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "INS AUGE GEHEN."
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     " "
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text10:     FCB     100,-120          ; y,x
+            fcc     "IN DIR MUSS BRENNEN"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "WAS DU IN ANDEREN"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "ENTZUENDEN MOECHTEST."
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     " "
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text11:     FCB     100,-125          ; y,x
+            fcc     "DIE GRENZEN DES MOEGLICHEN"
+            FCB     $80
+
+            FCB     80,-125         ; y,x
+            fcc     "LASSEN SICH NUR DADURCH"
+            FCB     $80
+
+            FCB     60,-125         ; y,x
+            fcc     "BESTIMMEN, DAS MAN SICH"
+            FCB     $80
+
+            FCB     40,-125          ; y,x
+            fcc     "EIN WENIG UEBER SIE HINAUS"
+            FCB     $80
+
+            FCB     20,-125          ; y,x
+            fcc     "INS UNMOEGLICHE WAGT."
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text12:     FCB     100,-120          ; y,x
+            fcc     "MENSCHEN DIE NICHT"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "AN SICH SELBST GLAUBEN"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "KOENNEN ANDEREN"
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     "KEINEN HALT GEBEN."
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text13:     FCB     100,-120          ; y,x
+            fcc     "AN DEM TAG AN DEM DU"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "ZU REISEN AUFHOERST"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "WIRST DU ANGEKOMMEN SEIN."
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     " "
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text14:     FCB     100,-120          ; y,x
+            fcc     "DIE MODERNSTE FORM"
+            FCB     $80
+
+            FCB     80,-120         ; y,x
+            fcc     "MENSCHLICHER ARMUT"
+            FCB     $80
+
+            FCB     60,-120         ; y,x
+            fcc     "IST DAS KEINE-ZEIT-HABEN."
+            FCB     $80
+
+            FCB     40,-120          ; y,x
+            fcc     " "
+            FCB     $80
+
+            FDB     0               ; end of list
+
+Text15:     FCB     100,-125          ; y,x
+            fcc     "WENN DU IMMER NUR DAS TUST"
+            FCB     $80
+
+            FCB     80,-125         ; y,x
+            fcc     "WAS DU BEREITS KANNST"
+            FCB     $80
+
+            FCB     60,-125         ; y,x
+            fcc     "BLEIBST DU IMMER NUR DAS"
+            FCB     $80
+
+            FCB     40,-125          ; y,x
+            fcc     "WAS DU HEUTE BIST."
+            FCB     $80
+
+            FDB     0               ; end of list
+
+		org     4093
+		fcc     "END"
+            END

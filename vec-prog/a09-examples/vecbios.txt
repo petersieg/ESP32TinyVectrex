@@ -1,0 +1,153 @@
+Start		equ	$f000	;DP in=xx out=xx	Jump here to restart Vectrex and re-initialize the OS
+Warm_Start	equ	$f06c	;DP in=xx out=xx	Jump here to restart Vectrex without re-initializing the OS
+Init_VIA		equ	$f14c	;DP in=xx out=D0	Initialize VIA chip
+Init_OS_RAM	equ	$f164	;DP in=xx out=C8	
+Init_OS		equ	$f18b	;DP in=xx out=D0	Used during power up
+Wait_Recal	equ	$f192	;DP in=xx out=D0	Wair for t2 and recalibrate vector generator
+Set_Refresh	equ	$f1a2	;DP in=D0 out=xx	Sets t2 refresh timr value
+DP_to_D0		equ	$f1aa	;DP in=xx out=D0	Set the DP reg to $D0 (hardware I/O area)
+DP_to_C8		equ	$f1af	;DP in=xx out=C8	Set the DP reg to $C8 (OS RAM area)
+Read_Btns_Mask	equ	$f1b4	;DP in=D0 out=xx	Read button States on two Joysticks
+Read_Btns		equ	$f1ba	;DP in=D0 out=xx	Read button States on two Joysticks
+Joy_Analog	equ	$f1f5	;DP in=D0 out=xx	Read the current positions of the two joysticks
+Joy_Digital	equ	$f1f8	;DP in=D0 out=xx	Read the current positions of the two joysticks
+Sound_Byte	equ	$f256	;DP in=D0 out=xx	Write a byte of music data to the music chip
+Sound_Byte_x	equ	$f259	;DP in=D0 out=xx	Write a byte of music data to the music chip
+Sound_Byte_raw	equ	$f25b	;DP in=D0 out=xx	Write a byte of music data to the music chip
+Clear_Sound	equ	$f272	;DP in=D0 out=xx	Clear 15 registers on the music chip
+Sound_Bytes	equ	$f27d	;DP in=D0 out=xx	Copy a block of sound info into music chip buffer and regs
+Sound_Bytes_x	equ	$f284	;DP in=D0 out=xx	Copy a block of sound info into music chip buffer and regs
+Do_Sound		equ	$f289	;DP in=D0 out=xx	Start / continue sound called to Init_Music
+Do_Sound_x	equ	$f28c	;DP in=D0 out=xx	Start / continue sound called to Init_Music
+Intensity_1F	equ	$f29d	;DP in=D0 out=xx	Set vector dot intesity
+Intensity_3F	equ	$f2a1	;DP in=D0 out=xx	Set vector dot intesity
+Intensity_5F	equ	$f2a5	;DP in=D0 out=xx	Set vector dot intesity
+Intensity_7F	equ	$f2a9	;DP in=D0 out=xx	Set vector dot intesity
+Intensity_a	equ	$f2ab	;DP in=D0 out=xx	Set vector dot intesity
+Dot_ix_b		equ	$f2be	;DP in=D0 out=xx	Draw dot
+Dot_ix		equ	$f2c1	;DP in=D0 out=xx	Draw dot
+Dot_d		equ	$f2c3	;DP in=D0 out=xx	Draw dot
+Dot_here		equ	$f2c5	;DP in=D0 out=xx	Draw dot
+Dot_List		equ	$f2d5	;DP in=D0 out=xx	Draw series of dots
+Dot_List_Reset	equ	$f2de	;DP in=D0 out=xx	Draw series of dots and reset integrators
+Recalibrate	equ	$f2e6	;DP in=D0 out=xx	Recalibrate vector generators
+Moveto_x_7F	equ	$f2f2	;DP in=D0 out=xx	Move pen and set scale to 7F
+Moveto_d_7F	equ	$f2fc	;DP in=D0 out=xx	Move pen and set scale to 7F
+Moveto_ix_FF	equ	$f308	;DP in=D0 out=xx	Move pen and set scale to FF, inc x by 2
+Moveto_ix_7F	equ	$f30c	;DP in=D0 out=xx	Move pen and set scale to 7F, inc x by 2
+Moveto_ix_b	equ	$f30c	;DP in=D0 out=xx	Move pen and set scale to b reg, inc x by 2
+Moveto_ix		equ	$f310	;DP in=D0 out=xx	Move pen at current scale, inc x by 2
+Moveto_d		equ	$f312	;DP in=D0 out=xx	Move pen at current scale
+Reset0Ref_D0	equ	$f34a	;DP in=xx out=D0	Reset integrators
+Check0Ref		equ	$f34f	;DP in=D0 out=xx	Check Reset0Ref zero flag
+Reset0Ref		equ	$f354	;DP in=D0 out=xx	Reset integrators, pen back to origin
+Reset_Pen		equ	$f35b	;DP in=D0 out=xx	Reset pen to origin
+Reset0Int		equ	$f36b	;DP in=D0 out=xx	Reset integrators to 0
+Print_Str_hwyx	equ	$f373	;DP in=D0 out=xx	Print a single string
+Print_Str_yx	equ	$f378	;DP in=D0 out=xx	Print a single string
+Print_Str_d	equ	$f37a	;DP in=D0 out=xx	Print a single string
+Print_List_hw	equ	$f385	;DP in=D0 out=xx	Print group of strings
+Print_List	equ	$f38a	;DP in=D0 out=xx	Print group of strings
+Print_List_chk	equ	$f38c	;DP in=D0 out=xx	Print group of strings
+Print_Ships_x	equ	$f391	;DP in=D0 out=xx	Display number of ships
+Print_Ships	equ	$f393	;DP in=D0 out=xx	Display number of ships
+Mov_Draw_VLc_a	equ	$f3ad	;DP in=D0 out=xx	Move pen and draw vector list
+Mov_Draw_VL_b	equ	$f3b1	;DP in=D0 out=xx	Move pen and draw vector list
+Mov_Draw_VLcs	equ	$f3b5	;DP in=D0 out=xx	Move pen and draw vector list
+Mov_Draw_VL_ab	equ	$f3b7	;DP in=D0 out=xx	Move pen and draw vector list
+Mov_Draw_VL_a	equ	$f3b9	;DP in=D0 out=xx	Move pen and draw vector list
+Mov_Draw_VL	equ	$f3bc	;DP in=D0 out=xx	Move pen and draw vector list
+Mov_Draw_VL_d	equ	$f3be	;DP in=D0 out=xx	Move pen and draw vector list
+Mov_Draw_VLC	equ	$f3ce	;DP in=D0 out=xx	Move pen and draw vector list
+Draw_VL_b		equ	$f3d2	;DP in=D0 out=xx	Move pen and draw vector list
+Draw_VLcs		equ	$f3d6	;DP in=D0 out=xx	Draw vector list
+Draw_VL_ab	equ	$f3d8	;DP in=D0 out=xx	Draw vector list
+Draw_VL_a		equ	$f3da	;DP in=D0 out=xx	Draw vector list
+Draw_VL		equ	$f3dd	;DP in=D0 out=xx	Draw vector list
+Draw_Line_d	equ	$f3df	;DP in=D0 out=xx	Draw vector list
+Draw_VLp_FF	equ	$f404	;DP in=D0 out=xx	Draw vector list
+Draw_VLp_7F	equ	$f408	;DP in=D0 out=xx	Draw vector list
+Draw_VLp_scale	equ	$f40c	;DP in=D0 out=xx	Draw vector list
+Draw_VLp_b	equ	$f40e	;DP in=D0 out=xx	Draw vector list
+Draw_VLp		equ	$f410	;DP in=D0 out=xx	Draw vector list
+Draw_Pat_VL_a	equ	$f434	;DP in=D0 out=xx	Draw patterned vector list
+Draw_Pat_VL	equ	$f437	;DP in=D0 out=xx	Draw patterned vector list
+Draw_Pat_VL_d	equ	$f439	;DP in=D0 out=xx	Draw patterned vector list
+Draw_VL_mode	equ	$f46e	;DP in=D0 out=xx	Draw vector list according to mode
+Print_Str		equ	$f495	;DP in=D0 out=xx	Print a text string
+Random_3		equ	$f511	;DP in=xx out=xx	Generate random 1 byte number
+Random		equ	$f517	;DP in=xx out=xx	Generate random 1 byte number
+Init_Music_Buf	equ	$f533	;DP in=xx out=xx	Clear music work buffer (C83F-C84C)
+Clear_x_b		equ	$f53f	;DP in=xx out=xx	Clear block of memory to 0
+Clear_C8_RAM	equ	$f542	;DP in=xx out=xx	Clear to 0 mem locations C800-C8FF
+Clear_x_256	equ	$f545	;DP in=xx out=xx	Clear 256 bytes of ram to 0
+Clear_x_d		equ	$f548	;DP in=xx out=xx	Clear 256 bytes of ram to 0
+Clear_x_b_80	equ	$f550	;DP in=xx out=xx	Sert block of mem to $80
+Clear_x_b_a	equ	$f552	;DP in=xx out=xx	Sert block of mem to $80
+Dec_3_Counters	equ	$f55a	;DP in=xx out=xx	Zero Counter
+Dec_6_Counters	equ	$f55e	;DP in=xx out=xx	Zero Counter
+Dec_Counters	equ	$f563	;DP in=xx out=xx	Zero Counter
+Delay_3		equ	$f56d	;DP in=xx out=xx	Fixed delay
+Delay_2		equ	$f571	;DP in=xx out=xx	Fixed delay
+Delay_1		equ	$f575	;DP in=xx out=xx	Fixed delay
+Delay_0		equ	$f579	;DP in=xx out=xx	Fixed delay
+Delay_b		equ	$f57a	;DP in=xx out=xx	Fixed delay
+Delay_RTS		equ	$f57d	;DP in=xx out=xx	Fixed delay
+Bitmask_a		equ	$f57e	;DP in=xx out=xx	Return a bit mask from a reg
+Abs_a_b		equ	$f584	;DP in=xx out=xx	Return absolute value from a and b reg
+Abs_b		equ	$f58b	;DP in=xx out=xx	Return absolute value from a and b reg
+Rise_Run_Angle	equ	$f593	;DP in=C8 out=xx	Calculate angle relative to rise,run pair
+Get_Rise_Idx	equ	$f5d9	;DP in=xx out=xx	Generate two index pairs (used by rotate routines)
+Get_Run_Idx	equ	$f5db	;DP in=xx out=xx	Generate two index pairs (used by rotate routines)
+Rise_Run_Idx	equ	$f5ef	;DP in=C8 out=xx	Get rise,run pair based on passed in angle
+Rise_Run_X	equ	$f5ff	;DP in=C8 out=xx	Calculate rise,run based on passed in angle
+Rise_Run_Y	equ	$f601	;DP in=C8 out=xx	Calculate rise,run based on passed in angle
+Rise_Run_Len	equ	$f603	;DP in=C8 out=xx	Calculate rise,run based on passed in angle
+Rot_VL_ab		equ	$f610	;DP in=xx out=C8	Rotate vector list
+Rot_VL		equ	$f616	;DP in=xx out=C8	Rotate vector list
+Rot_VL_Mode	equ	$f61f	;DP in=C8 out=xx	Rotate vector list
+Rot_VL_M_dft	equ	$f62b	;DP in=C8 out=xx	Rotate vector list
+xform_Run_A	equ	$f65b	;DP in=C8 out=xx	Generate rise value from rise index pair
+xform_Run		equ	$f65d	;DP in=C8 out=xx	Generate rise value from rise index pair
+xform_Rise_a	equ	$f661	;DP in=C8 out=xx	Generate rise value from rise index pair
+xform_Rise	equ	$f663	;DP in=C8 out=xx	Generate rise value from rise index pair
+Move_Mem_a_1	equ	$f67f	;DP in=xx out=xx	
+Move_Mem_a	equ	$f683	;DP in=xx out=xx	
+Init_Music_chk	equ	$f687	;DP in=C8 out=xx	
+Init_Music	equ	$f68d	;DP in=C8 out=xx	
+Init_Music_dft	equ	$f692	;DP in=C8 out=xx	
+Select_Game	equ	$f7a9	;DP in=xx out=C8	
+Display_Option	equ	$f835	;DP in=D0 out=xx	
+Clear_Score	equ	$f84f	;DP in=xx out=xx	
+Add_Score_a	equ	$f85e	;DP in=xx out=xx	
+Add_Score_d	equ	$f87c	;DP in=xx out=xx	
+Strip_Zeros	equ	$f8b7	;DP in=xx out=xx	
+Compare_Score	equ	$f8c7	;DP in=xx out=xx	
+New_High_Score	equ	$f8d8	;DP in=xx out=xx	
+Obj_will_Hit_u	equ	$f8e5	;DP in=xx out=xx	
+Obj_will_Hit	equ	$f8f3	;DP in=xx out=xx	
+Obj_Hit		equ	$f8ff	;DP in=xx out=xx
+Explosion_Snd	equ	$f92e	;DP in=C8 out=xx
+
+Vec_Joy_Mux_1_X	equ	$c81f	;Joystick 1 X enable/mux flag (=1)
+Vec_Joy_Mux_1_Y	equ	$c820	;Joystick 1 Y enable/mux flag (=3)
+Vec_Joy_Mux_2_X	equ	$c821	;Joystick 2 X enable/mux flag (=5)
+Vec_Joy_Mux_2_Y	equ	$c822	;Joystick 2 Y enable/mux flag (=7)
+Vec_Joy_Res	equ	$c81a 	;Joystick analog resolution factor (accuracy- $80=least, $00=most)
+Vec_Joy_1_X	equ	$c81b	;Joystick 1 left/right
+Vec_Joy_1_Y	equ	$c81c	;Joystick 1 up/down
+Vec_Joy_2_X	equ	$c81d	;Joystick 2 left/right
+Vec_Joy_2_Y	equ	$c81e	;Joystick 2 up/down
+Vec_Seed_Ptr	equ	$c87b 	;Pointer for random number generator
+VIA_t1_cnt_lo	equ	$d004  	;VIA timer 1 count register lo (scale factor)
+Vec_Music_Flag	equ	$c856	;0=no music playing, 1=music starting, $80=music playing
+Vec_Pattern	equ	$c829 	;vec pattern register
+Current_Button_State equ	$c80f	;1 byte - current state of buttons
+Button3_State	equ	$c814	;1 byte - returned button states
+Last_Button_State	equ	$c810	;1 byte - state of button at last check
+
+Via_port_a	equ	$d001	;via port a data I/O register (handshaking)
+Via_port_b	equ	$d000	;via port b data I/O register
+Via_DDR_b		equ	$d002	;via port b data direction register (0=input, 1=output)
+Via_DDR_a		equ	$d003	;via port a data direction register (0=input, 1=output)
+

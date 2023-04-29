@@ -1,0 +1,166 @@
+; Draws a figure
+; Based on code by Christopher Tumber
+; Based on work by man@sci.fi
+; (c) 2007 Peter.Sieg1@gmx.de
+; Public Domain for all Vectrex freaks
+
+; First we rename all the BIOS routines
+; we'll be needing
+
+waitrecal               EQU   $f192	
+movepen7ftod         	EQU   $f2fc
+intensitytoA         	EQU   $f2ab
+movedrawVL4           	EQU   $f3b7
+reset0ref			equ	$f354
+delayb			equ	$F57A
+
+; *** Needed variables
+value1			equ	$c881
+value2			equ	$c882
+value3			equ	$c883
+value4			equ	$c884
+
+; You can give them your own names if you want to
+; just make sure you understand them, and preferably
+; that someone else reading your source code 
+; understands them as well. (EQU = equals)
+
+; All programs start from address $0000
+; In this example, all numbers are actual numbers
+; not hexadecimals like in the tutorials
+; Assembly is quite capable of handling real numbers
+; and they are much more easy for a beginner to 
+; understand
+
+        ORG     $0000
+
+; Init block that needs to be in every program
+; the GCE text has to be in place, it is checked
+; by BIOS
+
+        FCB     $67,$20
+        FCC     "GCE SIEG"
+        FCB     $80
+        FDB     music
+        FDB     $f850
+        FDB     $30b8
+        FCC     "Z-ROTATING VECTOR"
+        FCB     $80,$0
+
+; Here's the main program
+; that will draw some vectors
+
+drawvec:			 ; Main program's label
+	lda   #32
+	sta   value1
+	sta   value2
+	sta   value3
+	sta   value4
+fig:			       				
+	lda   value1
+	deca
+	sta   value1
+	cmpa  #0
+	beq   fig1
+	jsr   restore
+      ldx   #figur0      ; Gets the vector list
+	jsr   draw
+	bra   fig
+fig1:
+	lda   value2
+	deca
+	sta   value2
+	cmpa  #0
+	beq   fig2		 
+	jsr   restore
+      ldx   #figur1      ; Gets the vector list
+	jsr   draw
+      bra   fig1
+
+fig2:
+	lda   value3
+	deca
+	sta   value3
+	cmpa  #0
+	beq   fig3
+	jsr   restore
+      ldx   #figur2      ; Gets the vector list
+	jsr   draw
+      bra   fig2
+
+fig3:
+	lda   value4
+	deca
+	sta   value4
+	cmpa  #0
+	beq   drawvec		 
+	jsr   restore
+      ldx   #figur1      ; Gets the vector list
+	jsr   draw
+      bra   fig3
+
+
+;
+; end of main program
+; subroutine section starts here
+;				 
+restore:
+        jsr   waitrecal          ; Resets the BIOS
+        jsr   reset0ref
+        lda   #127               ; Gets the Intensity
+        jsr   intensitytoA       ; Sets the Intensity
+
+        lda   #0                 ; Y - coordinate
+        ldb   #0                 ; X - coordinate
+        jsr   movepen7ftod       ; Moves pen to (Y,X)
+	  rts
+
+draw:
+;       ldx   #figurN            ; Gets the vector list
+        lda   #3                 ; Number of vectors
+				         ; = how many vectors 
+				         ; will be drawn, the
+				         ; starting point isn't
+				         ; counted
+        ldb   #$80               ; gets the scale
+        jsr   movedrawVL4        ; BIOS-routine that
+	  jsr   delay
+	  rts
+
+
+delay:
+        ldb   #255		 ; delay value
+	  jsr   delayb		 ; wait a while
+	  rts
+
+; It jumps back, because on Vectrex, you have to be
+; drawing all the time to keep the vectors visible
+
+; bra = branch
+; lda = load to register a
+; ldb = load to register b
+
+; ein Dreieck an 50,0
+figur0:  fcb   50,0		; 0,0 = Bildschirm-Mitte
+	   fcb   -32,32		; y=-32=gehe 32 Pixels nach unten und x=32=gehe 32 Pixels nach rechts
+	   fcb   0,-64          ; y=0=bleibe an y-Position und x=-64=gehe 64 Pixels nach links
+	   fcb   32,32	 	; y=32=gehe 32 Pixels nach oben und x=32gehe 32 Pixels nach rechts
+
+figur1:  fcb   50,0	
+	   fcb   -32,16
+	   fcb   0,-32
+	   fcb   32,16
+ 
+figur2:  fcb   50,0
+	   fcb   -32,0
+	   fcb   0,0 
+	   fcb   32,0
+
+
+music:
+        FDB     $fee8
+        FDB     $feb6
+        FCB     $28,$08
+        FCB     $0,$80
+
+; This basicly tells Vectrex to play nothing
